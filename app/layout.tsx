@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { UserProvider } from "@/contexts/userContext";
+import Nav from "@/components/Nav";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Mind Plus Journal",
@@ -16,7 +15,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className="md:flex md:flex-wrap">
+        <UserProvider>
+          <Nav />
+          <main>
+            {children}
+          </main>
+        </UserProvider>
+      </body>
     </html>
   );
 }
