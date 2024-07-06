@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 
 interface UserContextType {
   user: User | null;
+  loading: boolean;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -16,6 +17,7 @@ interface UserProviderProps {
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
     const supabase = createClient();
@@ -25,6 +27,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     } = await supabase.auth.getUser();
 
     setUser(user);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider value={{ user, loading }}>
       {children}
     </UserContext.Provider>
   );
